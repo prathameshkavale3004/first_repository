@@ -1,71 +1,71 @@
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.Point;
 
-public class JavaScriptExecutor{    //Do not change the class name
+public class MultipleWindows { //Do not change the class name
+    
+    //Use these declarations to store respective values
+    static String parentWinHandle;
+    static String childWinHandle;
+    Set<String> winHandles;
+    
+    static WebDriver driver;
 	
-	//Use the below declarations
-	public static WebDriver driver;
-	public static Object jsfname,jslname, jsuname, jspwd, jsphone, jsemail, jssubmit, jsreset;
-	
-	public WebDriver createDriver()
+	public WebDriver createDriver() //Do not change the method signature
 	{
-		//Create the driver using the class DriverSetup. Assign it to the variable 'driver' and return it.
-		driver = DriverSetup.getWebDriver();
-		return driver;
+	    driver = DriverSetup.getWebDriver(); /* Replace this comment by the code statement to create driver, assign it to 'static' variable and return the driver */
+	    driver.get("https://webapps.tekstac.com/MultipleWindow/");
+	    return driver;
 	}
- 
- 
-  public void submitForm(String fname,String lname, String uname, String pwd, String phone, String email) 
-  {
-	    JavascriptExecutor jse = ((JavascriptExecutor)driver);
-	    
-	    //Using javascript executor, locate the elements of 'firstname','lastname','username','password'
-	    //'phonenumber','email' and send the received values.
-	    //Submit the form
-        jsfname = jse.executeScript("return document.getElementsByName('firstname')[0]");
-        ((WebElement)jsfname).sendKeys(fname);
-        jslname = jse.executeScript("return document.getElementsByName('lastname')[0]");
-        ((WebElement)jslname).sendKeys(lname);
-        jsuname = jse.executeScript("return document.getElementsByName('username')[0]");
-        ((WebElement)jsuname).sendKeys(uname);
-        jspwd = jse.executeScript("return document.getElementsByName('password')[0]");
-        ((WebElement)jspwd).sendKeys(pwd);
-        jsphone = jse.executeScript("return document.getElementsByName('phonenumber')[0]");
-        ((WebElement)jsphone).sendKeys(phone);
-        jsemail = jse.executeScript("return document.getElementsByName('email')[0]");
-        ((WebElement)jsemail).sendKeys(email);
+	
+    public String getParentWindow() throws Exception { //Do not change the method signature
+        // Get  Parent Window Handle as string and return it
+        return parentWinHandle = driver.getWindowHandle();
+    }
+    
+    public String  getChildWindow() throws Exception { //Do not change the method signature
         
-        jssubmit = jse.executeScript("return document.getElementById('submit')");
-        ((WebElement)jssubmit).click();
-                
-  }
-  
-  
-  public void reset()
-  {
-	  JavascriptExecutor jse = ((JavascriptExecutor)driver);
-	  //Using javascript executor, locate the element reset and click it.
-	  jsreset = jse.executeScript("return document.getElementById('reset')");
-	  ((WebElement)jsreset).click();
-  }
-  
-  
-  public static void main(String[] args) {
-	    JavaScriptExecutor at=new JavaScriptExecutor();
-		at.createDriver();
-		at.reset();
-		//Use this values to submit the form
-		at.submitForm("Rahul","Dravid","Rahul","rahul@123","6232126711","rahultest@gmail.com");
-		
-		 
-	}
-  
+        // Click the href link. Find the child window's handle and return it.
+        //Hint: WAIT for child page to load and find the child window handle.
+        WebElement newWindowBtn = driver.findElement(By.xpath("/html/body/p/a"));
+        newWindowBtn.click();
+        Thread.sleep(3000);
+        
+        winHandles = driver.getWindowHandles();
+        for(String handle: winHandles){
+            System.out.println("handle "+ handle);
+            if(!handle.equals(parentWinHandle)){
+                driver.switchTo().window(handle);
+                childWinHandle = driver.getWindowHandle();
+                Thread.sleep(2000);
+            }
+        }
+        return childWinHandle;
+    }
+    
+    
+      
+    
+    public static void main(String[] args){   //Do not change the method signature
+	    MultipleWindows win=new MultipleWindows();
+	    //Implement code here
+	   win.createDriver();
+	   try{ 
+	       System.out.println("Parent window " + win.getParentWindow());
+	       System.out.println("Child window " + win.getChildWindow());
+          }catch(Exception e){
+           e.printStackTrace();
+          }
+        
+    }
 }
