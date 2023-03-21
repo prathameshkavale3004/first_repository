@@ -1,39 +1,51 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import java.io.IOException;
 
-public class CusRegExcel {         //Do not change the class name
-	
-	//Use this declaration to store values parsed from excel
-    public static String[] customerData=new String[5];
-    
-    public static String[] readExcelData(String fileName) throws IOException{   //Do not change the method signature
-    
-        //Implement code to read data from excel file. Store the values in 'customerData' array. Return the array. */
-        FileInputStream file=new FileInputStream(fileName);
-        XSSFWorkbook wb=new XSSFWorkbook(file);
-        XSSFSheet ws=wb.getSheet("customervalid");
-        XSSFRow row=ws.getRow(0);
-        for(int colNo=0;colNo<=4;colNo++)
-        {
-            customerData[colNo]=String.valueOf(row.getCell(colNo));
-        }
-        return customerData;
+public class SeleniumTestForm {      //Do not change the class name
 
+    public static WebDriver driver;
+    
+    public void createDriver() {                //Do not change the method signature
+        //Implement code to create driver and assign it to 'static' driver variable	
+        driver=DriverSetup.getWebDriver();
+        
     }
-    public static void getExcelPath(String sheetName)  {
-        //Locate the excel sheet. Return the file path
-        File inputFile=new File(sheetName);
-        String path=inputFile.getAbsolutePath();
+
+    public void testSeleniumTestForm() {    //Do not change the method signature
+    	//Read the data from excel sheet. Sheet name is 'customervalid'
+       //find the elements in the form and set values parsed from excel sheet. Submit the form for registration
+       String feedData[]=null;
+       try{
+           feedData=CusRegExcel.readExcelData("CustReg.xlsx");
+       }catch(Exception e){
+           System.out.println("Error");
+       }
+       driver.findElement(By.name("cname")).sendKeys(feedData[0]);
+       driver.findElement(By.name("age")).sendKeys(feedData[1]);
+       driver.findElement(By.name("address")).sendKeys(feedData[2]);
+       driver.findElement(By.name("phonenumber")).sendKeys(feedData[3]);
+       driver.findElement(By.name("email")).sendKeys(feedData[4]);
+       driver.findElement(By.id("submit")).click();
+    }
+    public void closeBrowser(){
+        //close the browser
+        driver.quit();
+    }
+
+    public static void main(String[] args) throws Exception 
+	{ 
+	    SeleniumTestForm customer=new SeleniumTestForm();
+	    customer.createDriver();
+	    customer.testSeleniumTestForm();
+	    customer.closeBrowser();
+	   // CusRegExcel customer = new CusRegExcel();
+	    //Add required code
 	}
-
-
 }
-
-  
