@@ -20,102 +20,84 @@ import org.w3c.dom.Node;
 
 
 
-public class DiscountCalculator{      //Do not change the class name
+public class ShipmentDetail{      //Do not change the class name
     
     //use this variable declaration
     public static WebDriver driver;
-    public XPath xpath;
     public Document doc;
+    public XPath xpath;
     
     
     public static WebDriver createDriver(){   //Do not change the method signature
 	
 	    /* Create a driver. Assign it to static variable 'driver' and return it */
-	    /* navigate to 'https://webapps.tekstac.com/CompanyOffersDiscount/'  */
+	    /* navigate to 'https://webapps.tekstac.com/Handling_Reg_Expression/'  */
 	    driver=DriverSetup.getWebDriver();
-	    driver.get("https://webapps.tekstac.com/CompanyOffersDiscount/");
+	    driver.get("https://webapps.tekstac.com/Handling_Reg_Expression/");
 	    return driver;
-	    
 	}
     
     public XPath ReadFile(String fileName,String id){      //Do not change the method signature
         //Retrieve the xml file name passed as 'fileName' parameter. Parse the xml and return the xPath
-        //Parameter 'id' is the id in the DiscountCalculator.xml
+        //Parameter 'id' is the id in the ShipmentDetail.xml
         try{
             String fname,lname,uname,pass=null;
             String projectPath=System.getProperty("user.dir");
             System.out.println(projectPath);
+            
             File fxmlFile=new File(projectPath+File.separator+fileName);
             System.out.println(projectPath+File.separator+fileName);
-            DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder=null;
-            builder=factory.newDocumentBuilder();
-            doc=builder.parse(fxmlFile);
-            XPathFactory xPathFactory=XPathFactory.newInstance();
-            xpath=xPathFactory.newInstance().newXPath();
             
-        }catch(Exception e)
+            DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder=factory.newDocumentBuilder();
+            doc=builder.parse(fxmlFile);
+            
+            XPathFactory xPathFactory=XPathFactory.newInstance();
+            xpath=xPathFactory.newXPath();
+        } catch(Exception e)
         {
             e.printStackTrace();
         }
         return xpath;
     }
     
-    public  Node getWeight(int id){   //Do not change the method signature
-        //Parse the xml to get 'Weight' element. Return its node
-        //Parameter 'id' is the id in the DiscountCalculator.xml
-        String UweightEx=String.format("/Shipmentdetails/Shipmentdetail[@id='"+id+"']/Weight");
+    public  Node getUserId(int id){   //Do not change the method signature
+        //Parse the xml to get 'UserId' element. Return its node
+        //Parameter 'id' is the id in the ShipmentDetail.xml
+        String UuseridEx=String.format("/ShipmentDetails/ShipmentDetail[@id='"+id+"']/UserId");
         Node node1=null;
         try{
-            node1=(Node)xpath.compile(UweightEx).evaluate(doc,XPathConstants.NODE);
-            
-        }catch (Exception e)
-        {
-        }
-        String uweight=node1!=null?(node1.getTextContent()):"cannot read the test case xml file";
+            node1=(Node)xpath.compile(UuseridEx).evaluate(doc,XPathConstants.NODE);
+        }catch(Exception e){}
+        String Uuserid=node1!=null?(node1.getTextContent()):"cannot read the test case xml file ";
         return node1;
-    }
-    
-    public  Node getDistance(int id){   //Do not change the method signature
-        //Parse the xml to get 'Distance' element. Return its node
-        //Parameter 'id' is the id in the DiscountCalculator.xml
-        String UdistanceEx=String.format("/Shipmentdetails/Shipmentdetail[@id='"+id+"']/Distance");
-        Node node1=null;
-        try{
-            node1=(Node)xpath.compile(UdistanceEx).evaluate(doc,XPathConstants.NODE);
-        
-            
-        }catch(Exception e)
-        {
         }
-        String udistance=node1!=null?(node1.getTextContent()):"cannot read the test case xml file";
-        return node1;
-    }
     
     
     
-    public  String  getMessage(){  //Do not change the method signature
+    
+      public  String  getMessage(){  //Do not change the method signature
         
         //Find the web elements in the page. Assign the respective values from xml to the form.
         //Submit the form 
-        //Locate the 'Datax shipping company offers discount' message and return it
-        System.out.println("Inside Message");
-        driver.findElement(By.id("weight")).sendKeys(getWeight(1).getTextContent());
-        driver.findElement(By.id("distance")).sendKeys(getDistance(1).getTextContent());
-        driver.findElement(By.id("submit")).click();
-        driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+        //Locate the 'Name : Shamili
+        //Shipment Id : SHIP1236
+        //Phone Number : 9224158877
+        //E-mail: shamili93@gamil.com' message and return it
+        driver.findElement(By.name("userId")).sendKeys(getUserId(1).getTextContent());
+        driver.findElement(By.id("track")).click();
         String message=driver.findElement(By.xpath("//*[@id=\"result\"]")).getText();
-        System.out.println("Message: "+message);
         return message;
         
-     }
+      }
 
     public static void main(String[] args){
-	    DiscountCalculator pagLocator=new DiscountCalculator();
-	    WebDriver driver=pagLocator.createDriver();
-	    pagLocator.ReadFile("DiscountCalculator.xml","1");
-	    String message=pagLocator.getMessage();
-	    driver.close();
-	    //Add required code here
+	   ShipmentDetail pagLocator=new ShipmentDetail();
+	   pagLocator.createDriver();
+	   pagLocator.ReadFile("ShipmentDetail.xml","1");
+	   String message=pagLocator.getMessage();
+	   System.out.println("Message: " +message);
+	   driver.close();
+	   //Add required code here
 	} 
 }
