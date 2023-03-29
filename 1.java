@@ -18,202 +18,163 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-
-
-public class UserDetails{      //Do not change the class name
+public class CommodityDetails {        //Do not change the class name
     
-    //use this variable declaration
+    //Use the below declarations    
     public static WebDriver driver;
-    public static Document doc;
-    public static XPath xpath;
+    public static XPath xPath;
+    public static Document doc;  
     
-    public static WebDriver createDriver(){   //Do not change the method signature
-	
-	    /* Create a driver. Assign it to static variable 'driver' and return it */
-	    /* navigate to 'http://webapps.tekstac.com/FormRegistration/UserRegistration.html'  */
-	    
-	    driver=DriverSetup.getWebDriver();
-	    driver.get("http://webapps.tekstac.com/FormRegistration/UserRegistration.html");
-	    
-	    return driver;
+    public static String name,weight,length,width,height;
+    
+    public static WebDriver createDriver(){     //Do not change the method signature
+       //Create the driver using the class 'DriverSetup'. Assign it to the variable 'driver' and return it.
+	   //Use URL, "http://webapps.tekstac.com/CommodityDetails/"
+	   driver=DriverSetup.getWebDriver();
+	   driver.get("http://webapps.tekstac.com/CommodityDetails/");
+	   return driver;
+	   
 	}
     
-    public XPath ReadFile(String fileName,String id){      //Do not change the method signature
-        //Retrieve the xml file name passed as 'fileName' parameter. Parse the xml and return the xPath
-        //Parameter 'id' is the id in the Userdetails.xml
-        try{
+    public static XPath readFile(String fileName,String id){     //Do not change the method signature
+        //Pass fileName and commodity id as parameter
+        //Parse the xml file. Return the xpath reference
+        try {
             DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
             DocumentBuilder builder=factory.newDocumentBuilder();
             doc=builder.parse(fileName);
-        } catch(Exception e){
-           System.out.println(e); 
-        }
+            
+            
+        } catch(Exception e) 
+        {
+            System.out.println(e);
+        } 
         doc.getDocumentElement().normalize();
         XPathFactory xPathFactory=XPathFactory.newInstance();
-        xpath=xPathFactory.newXPath();
-        return xpath;
-    }
-    
-    public  Node getName(int id){   //Do not change the method signature
-        //Parse the xml to get 'Name' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Name").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    public  Node getEmail(int id){   //Do not change the method signature
-        //Parse the xml to get 'Email' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Email").evaluate(doc,XPathConstants.NODE);
+        xPath=xPathFactory.newXPath();
         
-            }catch(Exception e)
-            {
-                System.out.println(e);
-            }
-            return node;
-    }
-    
-    public  Node getPhone(int id){    //Do not change the method signature
-        //Parse the xml to get 'Phone' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Phone").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    public  Node getAge(int id){        //Do not change the method signature
-        //Parse the xml to get 'Age' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Age").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-    public  Node getPassword(int id){    //Do not change the method signature
-        //Parse the xml to get 'Password' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Password").evaluate(doc,XPathConstants.NODE);
-            
-        } catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-    
-    public  Node getHobbies(int id){    //Do not change the method signature
-        //Parse the xml to get 'Hobbies' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Hobbies").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-    public  Node getGender(int id){    //Do not change the method signature
-        //Parse the xml to get 'Gender' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Gender").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-    public  Node getCity(int id){        //Do not change the method signature
-        //Parse the xml to get 'City' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/City").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-    public  Node getAddress(int id){       //Do not change the method signature
-       //Parse the xml to get 'Address' element. Return its node
-        //Parameter 'id' is the id in the Userdetails.xml
-        Node node=null;
-        try{
-            node=(Node)xpath.compile("//User[@id="+id+"]/Address").evaluate(doc,XPathConstants.NODE);
-            
-        }catch(Exception e)
-        {
-            System.out.println(e);
-        }
-        return node;
-    }
-    
-    
-      public  String  getMessage(){  //Do not change the method signature
+        return xPath;
         
-        //Find the web elements in the page. Assign the respective values from xml to the form.
-        //Submit the form 
-        //Locate the 'Registered Successfully' message and return it
-        driver.findElement(By.id("uname")).sendKeys(getName(1).getTextContent());
-        driver.findElement(By.id("uemail")).sendKeys(getEmail(1).getTextContent());
-        driver.findElement(By.id("phone")).sendKeys(getPhone(1).getTextContent());
-        driver.findElement(By.id("age")).sendKeys(getAge(1).getTextContent());
-        driver.findElement(By.id("pass")).sendKeys(getPassword(1).getTextContent());
-        driver.findElement(By.xpath("//input[@id='option1']/parent::label")).click();
-        driver.findElement(By.xpath("//input[@id='male']/parent::label")).click();
-        Select city=new Select(driver.findElement(By.id("city")));
-        city.selectByVisibleText(getCity(1).getTextContent());
-        driver.findElement(By.name("address")).sendKeys(getAddress(1).getTextContent());
-        driver.findElement(By.id("submit")).click();
-        String msg=driver.findElement(By.tagName("h2")).getText();
-        return msg;
+    }
+    
+    public static Node getName(int id){       //Do not change the method signature
+        //Pass the commodity id as parameter. Parse name and return it node.
+        Node node=null;
+        try{
+            node=(Node)xPath.compile("//Commodity[@id="+id+"]/Name").evaluate(doc,XPathConstants.NODE);
+            
+        }catch(Exception e)
+        {
+            
+        }
+        return node;
+    }
+    
+    public  static Node getWeight(int id){     //Do not change the method signature
+        //Pass the commodity id as parameter. Parse weight and return it node.
+        Node node=null;
+        try {
+            node=(Node)xPath.compile("//Commodity[@id="+id+"]/Weight").evaluate(doc,XPathConstants.NODE);
+            
+        } catch(Exception e) 
+        {
+            
+        }
+        return node;
+    }
+    
+    public  static Node getLength(int id){   //Do not change the method signature
+        //Pass the commodity id as parameter. Parse length and return it node.
+        Node node=null;
+        try {
+            node=(Node)xPath.compile("//Commodity[@id="+id+"]/Length").evaluate(doc,XPathConstants.NODE);
+            
+        } catch(Exception e) 
+        {
+            
+        }
+        return node;
+    }
+    
+    public static Node getWidth(int id){      //Do not change the method signature
+       //Pass the commodity id as parameter. Parse width and return it node.
+       Node node=null;
+       try {
+           node=(Node)xPath.compile("//Commodity[@id="+id+"]/Width").evaluate(doc,XPathConstants.NODE);
+           
+       } catch(Exception e) 
+       {
+           
+       }
+       return node;
+    }
+    
+    
+    public static Node getHeight(int id){     //Do not change the method signature
+        //Pass the commodity id as parameter. Parse heigth and return it node.
+        Node node=null;
+        try {
+            node=(Node)xPath.compile("//Commodity[@id="+id+"]/Height").evaluate(doc,XPathConstants.NODE);
+            
+        } catch(Exception e) 
+        {
+            
+        }
+        return node;
+    }
+ 
+    public static void readInsertedData(){     //Do not change the method signature
+        //Locate the row displayed on the page after submit.
+        //Find the text of of name,weight,height,width and length and store it in respective variables declared above
+        name=driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr[2]/td[1]")).getText();
+        weight=driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr[2]/td[2]")).getText();
+        length=driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr[2]/td[3]")).getText();
+        width=driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr[2]/td[4]")).getText();
+        height=driver.findElement(By.xpath("//table[@id='myTable']/tbody/tr[2]/td[5]")).getText();
+    }
+    
+    
+    
+    public static String getCommodityCount(){    //Do not change the method signature
+    	//Locate commodity count value after submit and return it
+    	String count=driver.findElement(By.id("count")).getAttribute("value");
+    	return count;
+    }
+    
+    public static String getTotalComWeight(){     //Do not change the method signature
+    	//Locate total weight value after submit and return it
+    	String total=driver.findElement(By.id("total")).getAttribute("value");
+    	return total;
+    }
+     
+    
+      public   static void  submitForm(int id){   //Do not change the method signature
+        //Locate the form elements and send the values parsed from xml.
+        //Submit the form.
+        //Pass commodity id as parameter
+        driver.findElement(By.id("name")).sendKeys(getName(id).getTextContent());
+        driver.findElement(By.id("weight")).sendKeys(getWeight(id).getTextContent());
+        driver.findElement(By.id("length")).sendKeys(getLength(id).getTextContent());
+        driver.findElement(By.id("width")).sendKeys(getWidth(id).getTextContent());
+        driver.findElement(By.id("height")).sendKeys(getHeight(id).getTextContent());
+        driver.findElement(By.id("add")).click();
         
       }
 
-    public static void main(String[] args){
-	    UserDetails pagLocator=new UserDetails();
+    public static void main(String[] args)
+	{
+	    CommodityDetails commodity=new CommodityDetails();
+	    //Implement code here
 	    createDriver();
-	    pagLocator.ReadFile("UserDetails.xml","1");
-	    System.out.println(pagLocator.getMessage());
+	    readFile("commodity.xml","1");
+	    submitForm(1);
+	    readInsertedData();
+	    getCommodityCount();
+	    getTotalComWeight();
 	    driver.close();
-	    //Add required code here
 	} 
-}
+       
+
+        
+
+    }
